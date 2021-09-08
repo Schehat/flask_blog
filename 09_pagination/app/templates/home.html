@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block content %}
+    {#  this is a jinja2 comment using html comment would cause to break the program due to jinja2 does not 
+        recognize comments near these blocks and comments the endblock for some unknown reason
+        this is how to do a loop 
+        {% for post in posts|reverse %} 
+        now using .items due to passing a pagination object
+    #}
+    {% for post in posts.items %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename=post.author.image_file) }}"></img>
+            <div class="media-body">
+                <div class="article-metadata">
+                    
+                    <!–– access variable with double curly braces & dot notation -->
+                    <a class="mr-2" href="{{ url_for('user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+                    <small class="text-muted">{{ post.date_posted.strftime("%d.%m.%Y") }}</small>
+                </div>
+                <!-- in href the hashtag(#) means the link does not go anywhere -->
+                <!-- referencing post page requires in 2nd argument the parameter post_id which 
+                    equals the current Post id -->
+                <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+    <!-- 
+        returns all pages
+        left_edge: how many on furthest left are shown and vice versa 
+        Note: right_current includes the current page so 2 is here the "correct" value
+    -->
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+            {% if posts.page == page_num %}
+                <!--
+                    highlight current page 
+                    in url typing <root>/?page=<num> displays this page & in this line we set this page parameter 
+                -->
+                <a class="btn btn-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>
+            {% else %}
+                <a class="btn btn-outline-info mb-4" href="{{ url_for('home', page=page_num) }}">{{ page_num }}</a>    
+            {% endif %}
+        {% else %}
+            ...
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

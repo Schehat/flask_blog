@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!–– this is how to do a loop -->
+    {% for post in posts|reverse %}
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename=post.author.image_file) }}"></img>
+            <div class="media-body">
+                <div class="article-metadata">
+                    
+                    <!–– access variable with double curly braces & dot notation -->
+                    <a class="mr-2" href="#">{{ post.author.username }}</a>
+                    <small class="text-muted">{{ post.date_posted.strftime("%d.%m.%Y") }}</small>
+                </div>
+                <!-- in href the hashtag(#) means the link does not go anywhere -->
+                <!-- referencing post page requires in 2nd argument the parameter post_id which 
+                    equals the current Post id -->
+                <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }}</p>
+            </div>
+        </article>
+    {% endfor %}
+{% endblock content %}
