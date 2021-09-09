@@ -3,7 +3,7 @@ from flask import Blueprint, render_template
 errors = Blueprint("errors", __name__)
 
 
-# creating a error handler is simalair to creating a route, but with a different decorator
+# creating a error handler is similar to creating a route, but with a different decorator
 # Errorhandler should be used for the entire application, thus using app_errorhander
 # To only work in this blueprint errorhandler is the way to go
 @errors.app_errorhandler(404)
