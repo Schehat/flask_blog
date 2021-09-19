@@ -51,6 +51,8 @@ def create_app(config_class=Config):
     from flask_blog.posts.routes import posts
     from flask_blog.users.routes import users
 
+    # url_prefix: default is "/". To set to a different location
+    # e.g. "/profile" then the url would be for the users example "/profile/users"
     app.register_blueprint(errors)
     app.register_blueprint(main)
     app.register_blueprint(users)
